@@ -12,7 +12,7 @@ to compensate for the lack of need for centrifuging.
 Tools added:
  - Uranium Sword
  - Uranium Axe
- - Uranium Shove
+ - Uranium Shovel
  - Uranium Pickaxe
  - Uranium Hoe
  - Uranium Multitool
@@ -23,3 +23,5 @@ Armor added:
  - Uranium Boots
  - Uranium Helmet
  - Uranium Shield
+
+![Screenshot](screenshot.png "Screenshot")
