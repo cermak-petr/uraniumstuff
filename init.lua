@@ -44,8 +44,8 @@ if not minetest.get_modpath("technic") then
 	    ore_type = "scatter",
 	    ore = "uraniumstuff:mineral_uranium",
 	    wherein = stone_name,
-	    clust_scarcity = 8*8*8*7,
-	    clust_num_ores = 4,
+	    clust_scarcity = 8*8*8*8*8,
+	    clust_num_ores = 2,
 	    clust_size = 3,
 	    y_min = -300,
 	    y_max = -80,
@@ -256,7 +256,8 @@ minetest.register_tool("uraniumstuff:uranium_multitool", {
         damage_groups = {fleshy = 10*damage_multiplier},
 	},
 	sound = {breaks = "default_tool_breaks"},
-	groups = {sword = 1, axe = 1, shovel = 1, pickaxe = 1}
+	groups = {sword = 1, axe = 1, shovel = 1, pickaxe = 1},
+    range = 8.0,
 })
 
 minetest.register_craft({
@@ -308,7 +309,7 @@ if minetest.get_modpath("3d_armor") then
 		inventory_image = "uraniumstuff_inv_uranium_helmet.png",
 		light_source = 5, -- Texture will have a glow when dropped
 		groups = {armor_head=1, armor_heal=12, armor_use=200, armor_fire=3},
-		armor_groups = {fleshy=20, radiation=50},
+		armor_groups = {fleshy=20, radiation=10},
 		damage_groups = {cracky=2, snappy=1, level=3},
 		wear = 0,
 	})
@@ -319,7 +320,7 @@ if minetest.get_modpath("3d_armor") then
 		inventory_image = "uraniumstuff_inv_uranium_chestplate.png",
 		light_source = 5, -- Texture will have a glow when dropped
 		groups = {armor_torso=1, armor_heal=12, armor_use=200, armor_fire=3},
-		armor_groups = {fleshy=30, radiation=50},
+		armor_groups = {fleshy=25, radiation=10},
 		damage_groups = {cracky=2, snappy=1, level=3},
 		wear = 0,
 	})
@@ -330,7 +331,7 @@ if minetest.get_modpath("3d_armor") then
 		inventory_image = "uraniumstuff_inv_uranium_leggings.png",
 		light_source = 5, -- Texture will have a glow when dropped
 		groups = {armor_legs=1, armor_heal=12, armor_use=200, armor_fire=3},
-		armor_groups = {fleshy=30, radiation=50},
+		armor_groups = {fleshy=25, radiation=10},
 		damage_groups = {cracky=2, snappy=1, level=3},
 		wear = 0,
 	})
@@ -341,7 +342,7 @@ if minetest.get_modpath("3d_armor") then
 		inventory_image = "uraniumstuff_inv_uranium_boots.png",
 		light_source = 5, -- Texture will have a glow when dropped
 		groups = {armor_feet=1, armor_heal=12, armor_use=200, armor_fire=3, physics_jump=0.5, physics_speed = 1},
-		armor_groups = {fleshy=20, radiation=50},
+		armor_groups = {fleshy=20, radiation=10},
 		damage_groups = {cracky=2, snappy=1, level=3},
 		wear = 0,
 	})
@@ -353,7 +354,7 @@ if minetest.get_modpath("3d_armor") then
 			inventory_image = "uraniumstuff_inv_uranium_shield.png",
 			light_source = 5, -- Texture will have a glow when dropped
 			groups = {armor_shield=1, armor_heal=12, armor_use=200, armor_fire=3},
-			armor_groups = {fleshy=30, radiation=50},
+			armor_groups = {fleshy=25, radiation=10},
 			damage_groups = {cracky=2, snappy=1, level=3},
 			wear = 0,
 		})
