@@ -10,16 +10,16 @@ Uranium ore will be found at the same heights as with technic, but at much lower
 to compensate for the lack of need for centrifuging.  
 
 Tools added:
-    Uranium Sword
-    Uranium Axe
-    Uranium Shove
-    Uranium Pickaxe
-    Uranium Hoe
-    Uranium Multitool
+ - Uranium Sword
+ - Uranium Axe
+ - Uranium Shove
+ - Uranium Pickaxe
+ - Uranium Hoe
+ - Uranium Multitool
     
 Armor added:
-    Uranium Chestplate
-    Uranium Leggings
-    Uranium Boots
-    Uranium Helmet
-    Uranium Shield
+ - Uranium Chestplate
+ - Uranium Leggings
+ - Uranium Boots
+ - Uranium Helmet
+ - Uranium Shield
