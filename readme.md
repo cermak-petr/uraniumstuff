@@ -1,5 +1,6 @@
 # Uranium Stuff
-Mod for Minetest, adds Uranium tools and armor, compatible with technic.  
+Mod for Minetest, adds Uranium tools and armor, compatible with Technic.  
+[ContentDB](https://content.minetest.net/packages/Epoxum/uraniumstuff/) [GitHub](https://github.com/cermak-petr/uraniumstuff)
 
 ![Screenshot](screenshot.png "Screenshot")
 
@@ -29,7 +30,7 @@ Uranium Shield
 
 Textures adapted from the following mods:  
 
-LavaStuff - https://github.com/minetest-mods/lavastuff
-Multitools - https://github.com/ChimneySwift/multitools
-MoreOres - https://github.com/minetest-mods/moreores
-TechnicPlus - https://github.com/mt-mods/technic
+Lava Stuff - [ContentDB](https://content.minetest.net/packages/Lone_Wolf/lavastuff/) [GitHub](https://github.com/minetest-mods/lavastuff)
+Multitools - [ContentDB](https://content.minetest.net/packages/ChimneySwift/multitools/) [GitHub](https://github.com/ChimneySwift/multitools)
+More Ores - [ContentDB](https://content.minetest.net/packages/Calinou/moreores/) [GitHub](https://github.com/minetest-mods/moreores)
+Technic Plus - [ContentDB](https://content.minetest.net/packages/mt-mods/technic_plus/) [GitHub](https://github.com/mt-mods/technic)
