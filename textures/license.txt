@@ -1,6 +1,6 @@
-Adapted Material
+Adapted Material (all continue using the original license)
 
-From LavaStuff mod (CC BY-SA 3.0):
+From LavaStuff mod (CC BY-SA 3.0) https://github.com/minetest-mods/lavastuff
 - uraniumstuff_boots_uranium.png
 - uraniumstuff_boots_uranium_preview.png
 - uraniumstuff_helmet_uranium.png
@@ -17,17 +17,17 @@ From LavaStuff mod (CC BY-SA 3.0):
 - uraniumstuff_shield_uranium.png
 - uraniumstuff_shield_uranium_preview.png
 
-From Multitools mod (CC0 1.0):
+From Multitools mod (CC0 1.0) https://github.com/ChimneySwift/multitools
 - uraniumstuff_uranium_multitool.png
 
-From MoreOres mod (zlib license):
+From MoreOres mod (zlib license) https://github.com/minetest-mods/moreores
 - uraniumstuff_uranium_axe.png
 - uraniumstuff_uranium_hoe.png
 - uraniumstuff_uranium_pick.png
 - uraniumstuff_uranium_shovel.png
 - uraniumstuff_uranium_sword.png
 
-From TechnicPlus mod (LGPL V2):
+From TechnicPlus mod (LGPL V2) https://github.com/mt-mods/technic
 - uraniumstuff_uranium_block.png
 - uraniumstuff_uranium_ingot.png
 - uraniumstuff_uranium_lump.png

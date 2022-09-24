@@ -1,5 +1,7 @@
 # Uranium Stuff
-Mod for Minetest, adds Uranium tools and armor, compatible with technic.
+Mod for Minetest, adds Uranium tools and armor, compatible with technic.  
+
+![Screenshot](screenshot.png "Screenshot")
 
 Have you ever wondered what to do with your waste 0% uranium?  
 Worry no more! Now you can use it to make tools and armor.  
@@ -10,18 +12,24 @@ Uranium ore will be found at the same heights as with technic, but at much lower
 to compensate for the lack of need for centrifuging.  
 
 Tools added:
- - Uranium Sword
- - Uranium Axe
- - Uranium Shovel
- - Uranium Pickaxe
- - Uranium Hoe
- - Uranium Multitool
+Uranium Sword  
+Uranium Axe  
+Uranium Shovel  
+Uranium Pickaxe  
+Uranium Hoe  
+Uranium Multitool  
     
 Armor added:
- - Uranium Chestplate
- - Uranium Leggings
- - Uranium Boots
- - Uranium Helmet
- - Uranium Shield
+Uranium Chestplate  
+Uranium Leggings  
+Uranium Boots  
+Uranium Helmet  
+Uranium Shield  
 
-![Screenshot](screenshot.png "Screenshot")
+
+Textures adapted from the following mods:  
+
+LavaStuff - https://github.com/minetest-mods/lavastuff
+Multitools - https://github.com/ChimneySwift/multitools
+MoreOres - https://github.com/minetest-mods/moreores
+TechnicPlus - https://github.com/mt-mods/technic
