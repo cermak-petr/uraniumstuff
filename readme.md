@@ -12,7 +12,7 @@ If the technic mod is not present, this mod will provide uranium ore generation.
 Uranium ore will be found at the same heights as with technic, but at much lower quantities,  
 to compensate for the lack of need for centrifuging.  
 
-Tools added:
+__Tools added__  
 Uranium Sword  
 Uranium Axe  
 Uranium Shovel  
@@ -20,7 +20,7 @@ Uranium Pickaxe
 Uranium Hoe  
 Uranium Multitool  
     
-Armor added:
+__Armor added__  
 Uranium Chestplate  
 Uranium Leggings  
 Uranium Boots  
@@ -28,8 +28,7 @@ Uranium Helmet
 Uranium Shield  
 
 
-Textures adapted from the following mods:  
-
+__Textures adapted from the following mods__  
 Lava Stuff - [ContentDB](https://content.minetest.net/packages/Lone_Wolf/lavastuff/) | [GitHub](https://github.com/minetest-mods/lavastuff)  
 Multitools - [ContentDB](https://content.minetest.net/packages/ChimneySwift/multitools/) | [GitHub](https://github.com/ChimneySwift/multitools)  
 More Ores - [ContentDB](https://content.minetest.net/packages/Calinou/moreores/) | [GitHub](https://github.com/minetest-mods/moreores)  
