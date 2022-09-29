@@ -6,6 +6,7 @@ local stone_sounds = nil
 local uses = 400
 local full_punch_interval = 0.3 --0.45
 local damage_multiplier = 1.5
+local radiation_damage = 5
 
 local MODNAME = minetest.get_current_modname()
 local MODPATH = minetest.get_modpath(MODNAME)
@@ -49,8 +50,8 @@ if not minetest.get_modpath("technic") then
 	    clust_size = 3,
 	    y_min = -300,
 	    y_max = -80,
-	    noise_params = uranium_params,
-	    noise_threshold = uranium_threshold,
+	    --noise_params = uranium_params,
+	    --noise_threshold = uranium_threshold,
     })
 
     minetest.register_node("uraniumstuff:uranium_block", {
@@ -113,7 +114,7 @@ minetest.register_tool("uraniumstuff:uranium_pick", {
 		groupcaps = {
 			cracky = {times = {[1] = 2.25, [2] = 0.55, [3] = 0.35}, uses = uses, maxlevel = 3},
 		},
-		damage_groups = {fleshy = 6*damage_multiplier},
+		damage_groups = {fleshy = 6*damage_multiplier, radioactive = radiation_damage},
 	},
 	sound = {breaks = "default_tool_breaks"},
 	groups = {pickaxe = 1}
@@ -141,7 +142,8 @@ minetest.register_tool("uraniumstuff:uranium_shovel", {
 		groupcaps = {
 			crumbly = {times = {[1] = 0.70, [2] = 0.35, [3] = 0.20}, uses = uses, maxlevel = 3},
 		},
-		damage_groups = {fleshy = 5*damage_multiplier},
+		damage_groups = {fleshy = 5*damage_multiplier, radioactive = radiation_damage},
+        radioactive = 1,
 	},
 	sound = {breaks = "default_tool_breaks"},
 	groups = {shovel = 1}
@@ -169,7 +171,8 @@ minetest.register_tool("uraniumstuff:uranium_axe", {
 			choppy = {times = {[1] = 1.75, [2] = 0.45, [3] = 0.45}, uses = uses, maxlevel = 3},
 			fleshy = {times = {[2] = 0.95, [3] = 0.30}, uses = uses, maxlevel = 2},
 		},
-		damage_groups = {fleshy = 8*damage_multiplier}
+		damage_groups = {fleshy = 8*damage_multiplier, radioactive = radiation_damage},
+        radioactive = 1,
 	},
 	sound = {breaks = "default_tool_breaks"},
 	groups = {axe = 1}
@@ -198,7 +201,8 @@ minetest.register_tool("uraniumstuff:uranium_sword", {
 			snappy = {times = {[1] = 1.70, [2] = 0.70, [3] = 0.25}, uses = uses, maxlevel = 3},
 			choppy = {times = {[3] = 0.65}, uses = uses, maxlevel = 0},
 		},
-		damage_groups = {fleshy = 10*damage_multiplier},
+		damage_groups = {fleshy = 10*damage_multiplier, radioactive = radiation_damage},
+        radioactive = 1,
 	},
 	sound = {breaks = "default_tool_breaks"},
 	groups = {sword = 1}
@@ -222,7 +226,8 @@ minetest.register_tool("uraniumstuff:uranium_hoe", {
 	tool_capabilities = {
 		full_punch_interval = full_punch_interval,
 		max_drop_level = 3,
-		max_uses = uses0,
+		max_uses = uses,
+        damage_groups = {radioactive = radiation_damage},
 	},
 	sound = {breaks = "default_tool_breaks"},
 	groups = {hoe = 1}
@@ -240,21 +245,22 @@ minetest.register_craft({
 
 -- Multitool
 
+local multitool_caps = {
+	full_punch_interval = full_punch_interval,
+	max_drop_level = 3,
+    groupcaps = {
+	    cracky = {times = {[1] = 2.25, [2] = 0.55, [3] = 0.35}, uses = uses, maxlevel = 3},
+        crumbly = {times = {[1] = 0.70, [2] = 0.35, [3] = 0.20}, uses = uses, maxlevel = 3},
+        choppy = {times = {[1] = 1.75, [2] = 0.45, [3] = 0.45}, uses = uses, maxlevel = 3},
+		fleshy = {times = {[2] = 0.65, [3] = 0.25}, uses = uses, maxlevel = 2},
+		snappy = {times = {[1] = 1.70, [2] = 0.70, [3] = 0.25}, uses = uses, maxlevel = 3},
+	},
+    damage_groups = {fleshy = 10*damage_multiplier, radioactive = radiation_damage},
+}
 minetest.register_tool("uraniumstuff:uranium_multitool", {
     description = S("Uranium Multitool"),
     inventory_image = "uraniumstuff_uranium_multitool.png",
-	tool_capabilities = {
-		full_punch_interval = full_punch_interval,
-		max_drop_level = 3,
-        groupcaps = {
-			cracky = {times = {[1] = 2.25, [2] = 0.55, [3] = 0.35}, uses = uses, maxlevel = 3},
-            crumbly = {times = {[1] = 0.70, [2] = 0.35, [3] = 0.20}, uses = uses, maxlevel = 3},
-            choppy = {times = {[1] = 1.75, [2] = 0.45, [3] = 0.45}, uses = uses, maxlevel = 3},
-			fleshy = {times = {[2] = 0.65, [3] = 0.25}, uses = uses, maxlevel = 2},
-			snappy = {times = {[1] = 1.70, [2] = 0.70, [3] = 0.25}, uses = uses, maxlevel = 3},
-		},
-        damage_groups = {fleshy = 10*damage_multiplier},
-	},
+	tool_capabilities = multitool_caps,
 	sound = {breaks = "default_tool_breaks"},
 	groups = {sword = 1, axe = 1, shovel = 1, pickaxe = 1},
     range = 8.0,
@@ -266,6 +272,36 @@ minetest.register_craft({
         {"", "uraniumstuff:uranium_shovel", ""},
         {"uraniumstuff:uranium_axe", "uraniumstuff:uranium_pick", "uraniumstuff:uranium_sword"},
     }
+})
+
+-- Gems
+
+minetest.register_craftitem("uraniumstuff:uranium_gem", {
+	description = S("Uranium Gem"),
+	inventory_image = "uraniumstuff_uranium_gem.png"
+})
+
+minetest.register_craft({
+    output = "uraniumstuff:uranium_gem",
+    recipe = {
+		{"", ingot_name, ""},
+		{ingot_name, ingot_name, ingot_name},
+		{"", ingot_name, ""},
+	}
+})
+
+minetest.register_craftitem("uraniumstuff:uranium_protection_gem", {
+	description = S("Uranium Protection Gem"),
+	inventory_image = "uraniumstuff_uranium_protection_gem.png"
+})
+
+minetest.register_craft({
+    output = "uraniumstuff:uranium_protection_gem",
+    recipe = {
+		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
+		{"default:mese_crystal", "uraniumstuff:uranium_gem", "default:mese_crystal"},
+		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
+	}
 })
 
 
@@ -296,6 +332,46 @@ if minetest.get_modpath("toolranks") then
 		after_use = toolranks.new_afteruse
 	})
 end
+
+
+-- Irradiating entities
+
+local function register_entity_on_punch(callback)
+    for name, entity in pairs(minetest.registered_entities) do
+        print(name)
+        local orig = entity.on_punch
+        entity.on_punch = function(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+           callback(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+           orig(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+        end
+    end
+end
+
+local function irradiate_entity(entity, damage, time)
+    local function radiation_damage(entity, damage, time)
+        entity.health = entity.health - damage
+        print("Entity damaged by radiation.")
+        if entity.health <= 0 then
+            entity.health = 0 
+        else
+            minetest.after(time, radiation_damage, entity, damage, time)          
+        end
+    end
+    if entity.health and entity.health > 0 and not entity.irradiated then
+        entity.irradiated = true
+        --entity.textures[1] = entity.textures[1] .. "^uraniumstuff_irradiated.png"
+        --entity.base_texture[1] = entity.base_texture[1] .. "^uraniumstuff_irradiated.png"
+        minetest.after(time, radiation_damage, entity, damage, time)
+    end
+end
+
+register_entity_on_punch(function(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+    local rad_damage = tool_capabilities.damage_groups.radioactive
+    if rad_damage and rad_damage > 0 then
+        irradiate_entity(punched, rad_damage, 1)
+        print("Entity irradiated.")
+    end
+end)
 
 
 -- Armor
@@ -360,6 +436,74 @@ if minetest.get_modpath("3d_armor") then
 		})
 	    minetest.register_alias("uraniumstuff:uranium_shield", "uraniumstuff:shield_uranium")
 	end
+
+    local function has_item(player_name, item_name)
+        local inventory = minetest.get_inventory({type="player", name=player_name}):get_list("main")
+        for _, stack in ipairs(inventory) do
+            if stack:get_name() == item_name then
+                return true
+            end
+        end
+        return false
+    end
+
+    local player_uranium_armors = {}
+    armor:register_on_equip(function(player, index, stack)
+        local armor_name = stack:get_name()
+        local player_name = player:get_player_name()
+        --local has_gem = has_item(player_name, "uraniumstuff:uranium_protection_gem")
+
+        if string.find(armor_name, "uranium") then
+            if not player_uranium_armors[player_name] then 
+                player_uranium_armors[player_name] = 0 
+            end
+            player_uranium_armors[player_name] = player_uranium_armors[player_name] + 1
+        end
+    end)
+    armor:register_on_unequip(function(player, index, stack)
+        local armor_name = stack:get_name()
+        local player_name = player:get_player_name()
+
+        if string.find(armor_name, "uranium") then
+            if not player_uranium_armors[player_name] then 
+                player_uranium_armors[player_name] = 0 
+            end
+            player_uranium_armors[player_name] = player_uranium_armors[player_name] - 1
+        end
+    end)
+
+    local function alter_health(player_name, change)
+        local player = minetest.get_player_by_name(player_name)
+        local hp_max = player:get_properties().hp_max
+
+        if player == nil then return end
+
+        local current_health = player:get_hp()
+        local new_health = current_health + change
+
+        if new_health > hp_max then new_health = hp_max end
+        if new_health < 0 then new_health = 0 end
+
+        player:set_hp(new_health)
+    end
+
+    
+    local function damage_players()
+        for player_name, count in pairs(player_uranium_armors) do
+            if count > 0 then
+                --local player = minetest.get_player_by_name(player_name)
+                local has_gem = has_item(player_name, "uraniumstuff:uranium_protection_gem")
+                if not has_gem then
+                    --print(dump(player:get_meta():to_table()))
+                    --player:punch(nil, 5, multitool_caps, nil)
+                    alter_health(player_name, count*-1)
+                end
+            end
+        end
+        minetest.after(5, damage_players)
+    end
+    damage_players()
+
 end
 
 if minetest.get_modpath("3d_armor") or minetest.get_modpath("mcl_armor") then
