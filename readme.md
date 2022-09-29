@@ -31,8 +31,8 @@ Uranium Boots
 Uranium Helmet  
 Uranium Shield  
 
-__Special items__
-Uranium Gem
+__Special items__  
+Uranium Gem  
 Uranium Protection Gem
 
 
