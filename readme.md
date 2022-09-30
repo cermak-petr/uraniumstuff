@@ -11,6 +11,7 @@ Tools are fast and deal a lot of damage, armor also provides radiation protectio
 __NEW ADDITIONS__
  * Tools will now irradiate mobs to drain their health over time.
  * Armor will drain your health if the "Uranium Protection Gem" is not in your inventory.
+ * Most settings can be configured
 
 If the technic mod is not present, this mod will provide uranium ore generation.  
 Uranium ore will be found at the same heights as with technic, but at much lower quantities,  
