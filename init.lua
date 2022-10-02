@@ -368,7 +368,6 @@ if allow_irradiating then
 
     local function register_entity_on_punch(callback)
         for name, entity in pairs(minetest.registered_entities) do
-            print(name)
             local orig = entity.on_punch
             entity.on_punch = function(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
                callback(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
@@ -396,10 +395,12 @@ if allow_irradiating then
     end
 
     register_entity_on_punch(function(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
-        local rad_damage = tool_capabilities.damage_groups.radioactive
-        if rad_damage and rad_damage > 0 then
-            irradiate_entity(punched, rad_damage, 1)
-            --print("Entity irradiated.")
+        if tool_capabilities and tool_capabilities.damage_groups then
+            local rad_damage = tool_capabilities.damage_groups.radioactive
+            if rad_damage and rad_damage > 0 then
+                irradiate_entity(punched, rad_damage, 1)
+                --print("Entity irradiated.")
+            end
         end
     end)
 
