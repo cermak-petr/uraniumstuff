@@ -8,9 +8,10 @@ Have you ever wondered what to do with your waste 0% uranium?
 Worry no more! Now you can use it to make tools and armor.  
 Tools are fast and deal a lot of damage, armor also provides radiation protection.  
 
-__NEW ADDITIONS__
+__NEW FEATURES__
  * Tools will now irradiate mobs to drain their health over time.
  * Armor will drain your health if the "Uranium Protection Gem" is not in your inventory.
+ * Uranium tool in hand will now also drain your health without the gem
  * Most settings can be configured
 
 If the technic mod is not present, this mod will provide uranium ore generation.  
