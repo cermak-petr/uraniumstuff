@@ -18,3 +18,6 @@ uraniumstuff.allow_irradiating_mobs (The tools will irradiate mobs) bool true
 
 #Allow armor radiation
 uraniumstuff.allow_armor_radiation (Without protection gem, the armor will be dangerous to wear) bool true
+
+#Allow tool radiation
+uraniumstuff.allow_tool_radiation (Without protection gem, the tools will be dangerous to use) bool true

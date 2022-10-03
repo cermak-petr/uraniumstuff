@@ -24,6 +24,7 @@ local radiation_damage = get_setting("radiation_damage", 5)
 local allow_multitool = minetest.settings:get_bool("uraniumstuff.allow_multitool", true)
 local allow_irradiating = minetest.settings:get_bool("uraniumstuff.allow_irradiating_mobs", true)
 local allow_armor_damage = minetest.settings:get_bool("uraniumstuff.allow_armor_radiation", true)
+local allow_tool_damage = minetest.settings:get_bool("uraniumstuff.allow_tool_radiation", true)
 
 -- MineClone compatibility
 
@@ -53,15 +54,24 @@ if not minetest.get_modpath("technic") then
 	    drop = "uraniumstuff:uranium_lump",
     })
 
+    local ORE_MIN = -80
+    local ORE_MAX = -300
+    local ORE_SCARCITY = 8*8*8*8*8
+    if minetest.get_modpath("mcl_core") then
+        local ORE_MIN = -10
+        local ORE_MAX = -64
+        local ORE_SCARCITY = 8*8*8*8*8*8
+    end
+
     minetest.register_ore({
 	    ore_type = "scatter",
 	    ore = "uraniumstuff:mineral_uranium",
 	    wherein = stone_name,
-	    clust_scarcity = 8*8*8*8*8,
+	    clust_scarcity = ORE_SCARCITY,
 	    clust_num_ores = 2,
 	    clust_size = 3,
-	    y_min = -300,
-	    y_max = -80,
+	    y_min = ORE_MIN,
+	    y_max = ORE_MAX,
 	    --noise_params = uranium_params,
 	    --noise_threshold = uranium_threshold,
     })
@@ -292,7 +302,7 @@ end
 
 -- Gems
 
-if allow_armor_damage then
+if allow_armor_damage or allow_tool_damage then
 
     minetest.register_craftitem("uraniumstuff:uranium_gem", {
         description = S("Uranium Gem"),
@@ -313,12 +323,19 @@ if allow_armor_damage then
         inventory_image = "uraniumstuff_uranium_protection_gem.png"
     })
 
+    local iron_ingot = "default:steel_ingot"
+    local crystal_name = "default:mese_crystal"
+    if minetest.get_modpath("mcl_core") then
+        iron_ingot = "mcl_core:iron_ingot"
+        crystal_name = "mcl_core:emerald"
+    end
+
     minetest.register_craft({
         output = "uraniumstuff:uranium_protection_gem",
         recipe = {
-            {"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
-            {"default:mese_crystal", "uraniumstuff:uranium_gem", "default:mese_crystal"},
-            {"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
+            {iron_ingot, crystal_name, iron_ingot},
+            {crystal_name, "uraniumstuff:uranium_gem", crystal_name},
+            {iron_ingot, crystal_name, iron_ingot},
         }
     })
 
@@ -469,11 +486,12 @@ if minetest.get_modpath("3d_armor") then
 	    minetest.register_alias("uraniumstuff:uranium_shield", "uraniumstuff:shield_uranium")
 	end
 
-    if allow_armor_damage then
+    if allow_armor_damage or allow_tool_damage then
     
         local function has_item(player_name, item_name)
-            local inventory = minetest.get_inventory({type="player", name=player_name}):get_list("main")
-            for _, stack in ipairs(inventory) do
+            local inventory = minetest.get_inventory({type="player", name=player_name})
+            local main_list = inventory:get_list("main")
+            for _, stack in ipairs(main_list) do
                 if stack:get_name() == item_name then
                     return true
                 end
@@ -481,37 +499,9 @@ if minetest.get_modpath("3d_armor") then
             return false
         end
 
-        local player_uranium_armors = {}
-        armor:register_on_equip(function(player, index, stack)
-            local armor_name = stack:get_name()
-            local player_name = player:get_player_name()
-            --local has_gem = has_item(player_name, "uraniumstuff:uranium_protection_gem")
-
-            if string.find(armor_name, "uranium") then
-                if not player_uranium_armors[player_name] then 
-                    player_uranium_armors[player_name] = 0 
-                end
-                player_uranium_armors[player_name] = player_uranium_armors[player_name] + 1
-            end
-        end)
-        armor:register_on_unequip(function(player, index, stack)
-            local armor_name = stack:get_name()
-            local player_name = player:get_player_name()
-
-            if string.find(armor_name, "uranium") then
-                if not player_uranium_armors[player_name] then 
-                    player_uranium_armors[player_name] = 0 
-                end
-                player_uranium_armors[player_name] = player_uranium_armors[player_name] - 1
-            end
-        end)
-
-        local function alter_health(player_name, change)
-            local player = minetest.get_player_by_name(player_name)
-            local hp_max = player:get_properties().hp_max
-
+        local function alter_health(player, change)
             if player == nil then return end
-
+            local hp_max = player:get_properties().hp_max
             local current_health = player:get_hp()
             local new_health = current_health + change
 
@@ -521,16 +511,42 @@ if minetest.get_modpath("3d_armor") then
             player:set_hp(new_health)
         end
 
+        local function has_radioactive_tool(player)
+            local wield = player:get_wielded_item()
+            if wield then
+                local tool_cap = wield:get_tool_capabilities()
+                if tool_cap and tool_cap.damage_groups and tool_cap.damage_groups.radioactive then
+                    return true
+                end
+            end
+            return false
+        end
+
+        local function pattern_count(base, pattern)
+            return select(2, string.gsub(base, pattern, ""))
+        end
+
+        local function get_radioactive_armor_count(player)
+            local inv_3d = player:get_meta():get_string("3d_armor_inventory")
+            if not inv_3d then return 0 end
+            return pattern_count(inv_3d, "uraniumstuff:")
+        end
 
         local function damage_players()
-            for player_name, count in pairs(player_uranium_armors) do
-                if count > 0 then
-                    --local player = minetest.get_player_by_name(player_name)
+            local players = minetest.get_connected_players()
+            for _, player in ipairs(players) do
+                local damage = 0
+                if allow_armor_damage then
+                    damage = damage + get_radioactive_armor_count(player)
+                end
+                if allow_tool_damage and has_radioactive_tool(player) then
+                    damage = damage + 1
+                end
+                if damage > 0 then
+                    local player_name = player:get_player_name()
                     local has_gem = has_item(player_name, "uraniumstuff:uranium_protection_gem")
                     if not has_gem then
-                        --print(dump(player:get_meta():to_table()))
-                        --player:punch(nil, 5, multitool_caps, nil)
-                        alter_health(player_name, count*-1)
+                        alter_health(player, damage*-1)
                     end
                 end
             end
