@@ -12,6 +12,7 @@ __NEW FEATURES__
  * Tools will now irradiate mobs to drain their health over time.
  * Armor will drain your health if the "Uranium Protection Gem" is not in your inventory.
  * Uranium tool in hand will now also drain your health without the gem
+ * Irradiated mobs have a radioactive green glow
  * Most settings can be configured
 
 If the technic mod is not present, this mod will provide uranium ore generation.  
