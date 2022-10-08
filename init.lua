@@ -592,7 +592,9 @@ if allow_irradiating then
             local orig = entity.on_punch
             entity.on_punch = function(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
                callback(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
-               orig(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+               if orig then
+                   orig(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+               end
             end
         end
     end
