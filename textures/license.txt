@@ -32,6 +32,12 @@ From TechnicPlus mod (LGPL V2) https://github.com/mt-mods/technic
 - uraniumstuff_uranium_ingot.png
 - uraniumstuff_uranium_lump.png
 
+From Minetest Game (CC BY-SA 3.0) https://github.com/minetest/minetest_game/
+- uraniumstuff_bucket_goo.png
+- uraniumstuff_goo.png
+- uraniumstuff_goo_flowing.png
+- uraniumstuff_goo_source.png
+
 
 Any other textures will be using the following license:
 

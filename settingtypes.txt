@@ -21,3 +21,9 @@ uraniumstuff.allow_armor_radiation (Without protection gem, the armor will be da
 
 #Allow tool radiation
 uraniumstuff.allow_tool_radiation (Without protection gem, the tools will be dangerous to use) bool true
+
+#Leave residue
+uraniumstuff.leave_residue (Mobs killed by radiation will leave green goo residue) bool true
+
+#Max goo range
+uraniumstuff.max_goo_range (Maximum distance for evil goo to follow mobs) int 15

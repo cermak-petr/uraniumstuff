@@ -8,7 +8,7 @@ local MODNAME = minetest.get_current_modname()
 local MODPATH = minetest.get_modpath(MODNAME)
 local S = minetest.get_translator(MODNAME)
 
-local function get_setting(key, default)
+function get_setting(key, default)
 	local value = minetest.settings:get("uraniumstuff." .. key)
 	local num_value = tonumber(value)
 	if value and not num_value then
@@ -25,13 +25,20 @@ local allow_multitool = minetest.settings:get_bool("uraniumstuff.allow_multitool
 local allow_irradiating = minetest.settings:get_bool("uraniumstuff.allow_irradiating_mobs", true)
 local allow_armor_damage = minetest.settings:get_bool("uraniumstuff.allow_armor_radiation", true)
 local allow_tool_damage = minetest.settings:get_bool("uraniumstuff.allow_tool_radiation", true)
+local leave_residue = minetest.settings:get_bool("uraniumstuff.leave_residue", true)
 
+function round(num)
+    return num + (2^52 + 2^51) - (2^52 + 2^51)
+end
+
+dofile(MODPATH .. "/goo.lua")
 
 -- MineClone compatibility
 
 if minetest.get_modpath("mcl_core") then
     stick_name = "mcl_core:stick"
-    stone_name = "mcl_core:stone"
+    stone_name = "mcl_deepslate:deepslate"
+    stone_image = "mcl_deepslate.png"
 end
 
 if minetest.get_modpath("mcl_sounds") then
@@ -62,7 +69,7 @@ if not minetest.get_modpath("technic") then
     if minetest.get_modpath("mcl_core") then
         local ORE_MIN = -10
         local ORE_MAX = -64
-        local ORE_SCARCITY = 8*8*8*8*8*8
+        local ORE_SCARCITY = 8*8*8*8
     end
 
     minetest.register_ore({
@@ -591,8 +598,10 @@ if allow_irradiating then
         for name, entity in pairs(minetest.registered_entities) do
             local orig = entity.on_punch
             entity.on_punch = function(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
-               callback(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
-               orig(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+                callback(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+                if orig then
+                    orig(punched, puncher, time_from_last_punch, tool_capabilities, direction, damage)
+                end
             end
         end
     end
@@ -608,10 +617,48 @@ if allow_irradiating then
        return t
     end
 
+    local function set_entity_texture(entity, textures)
+        local prop = entity.object:get_properties()
+        prop.textures = textures
+        prop.glow = 10
+        prop.use_texture_alpha = true
+        entity.object:set_properties(prop)
+    end
+
+    local new_texture = "uraniumstuff_goo.png"
+    local entity_goo_textures = {
+        new_texture, new_texture, new_texture, new_texture, new_texture, 
+        new_texture, new_texture, new_texture, new_texture, new_texture, 
+        new_texture, new_texture, new_texture, new_texture, new_texture,
+        new_texture, new_texture, new_texture, new_texture, new_texture, 
+        new_texture, new_texture, new_texture, new_texture, new_texture, 
+        new_texture, new_texture, new_texture, new_texture, new_texture,
+    }
+
+    local function liquify_entity(entity)
+        if not (entity and entity.object) then return nil end
+        local pos = entity.object:get_pos()
+        if not pos then return nil end
+        entity.state = "stand"
+        set_entity_texture(entity, entity_goo_textures)
+        local r_pos = {x = round(pos.x), y = round(pos.y), z = round(pos.z)}
+        local low_pos_1 = {x = r_pos.x, y = r_pos.y - 1, z = r_pos.z}
+        local low_pos_2 = {x = r_pos.x, y = r_pos.y - 2, z = r_pos.z}
+        local low_node = minetest.get_node(low_pos_2)
+        minetest.set_node(r_pos, {name = "uraniumstuff:goo_source"})
+        minetest.after(3, function()
+            minetest.set_node(r_pos, {name = "uraniumstuff:goo_flowing"})
+            if leave_residue and low_node.name ~= "air" then
+                minetest.set_node(low_pos_1, {name = "uraniumstuff:goo_source"})
+            end
+        end)
+    end
+
     local function irradiate_entity(entity, damage, time)
         local function radiation_damage(entity, damage, time)
             entity.health = entity.health - damage
             if entity.health <= 0 then
+                liquify_entity(entity)
                 entity.health = 0 
             else
                 minetest.after(time, radiation_damage, entity, damage, time)          
