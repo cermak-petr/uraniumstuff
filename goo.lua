@@ -333,8 +333,7 @@ end
 local function get_closest_entity(pos)
     local dist = 0
     local cl_entity = nil
-    for _, entity in ipairs(minetest.luaentities) do
-        local attack_entity = entity.health and entity.health > 0
+    for name, entity in pairs(minetest.luaentities) do
         if entity.health and entity.health > 0 then
             local e_pos = entity.object:get_pos()
             if e_pos then 
