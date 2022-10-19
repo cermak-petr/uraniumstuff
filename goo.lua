@@ -228,10 +228,9 @@ if minetest.get_modpath("bucket") then
         {tool = 1}
     )
     minetest.register_craft({
+        type = "shapeless",
 		output = "uraniumstuff:bucket_evil_goo",
-		recipe = {
-			{"uraniumstuff:bucket_goo", "uraniumstuff:uranium_gem"},
-		}
+		recipe = {"uraniumstuff:bucket_goo", "uraniumstuff:uranium_gem"},
 	})
 end
 
